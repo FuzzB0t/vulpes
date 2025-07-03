@@ -10,11 +10,6 @@ pub struct Finding {
     pub line: usize,
 }
 
-/// Compute 1-based line number from byte offset
-fn byte_offset_to_line(source: &str, offset: usize) -> usize {
-    source[..offset].lines().count()
-}
-
 // Walks through AST tree and finds matching vulnerability patterns
 pub fn analyze_ast(ast: &SourceUnit, source: &str) -> Vec<Finding> {
     let mut findings = Vec::new();
@@ -61,7 +56,7 @@ fn visit_stmt(
             contract: contract.to_string(),
             function: function.to_string(),
             reason,
-            line: byte_offset_to_line(source, stmt.loc().start()),
+            line: source[..stmt.loc().start()].lines().count(),
         });
     }
     // Recurse into blocks
@@ -78,7 +73,7 @@ fn visit_stmt(
                 contract: contract.to_string(),
                 function: function.to_string(),
                 reason,
-                line: byte_offset_to_line(source, stmt.loc().start()),
+                line: source[..stmt.loc().start()].lines().count(),
             });
         }
         visit_stmt(then_branch.as_ref(), contract, function, source, findings);
@@ -113,7 +108,7 @@ fn expr_contains_reentrancy_risk(expr: &Expression) -> Option<String> {
         return Some("Reentrancy Risk: delegatecall() or callcode() external call".into());
     }
     
-    // recurse into sub-expressions
+    // recurse into sub-expressions to ensure we capture these patterns anywhere in the call stack
     match expr {
         Expression::FunctionCall(_, callee, args) => {
             expr_contains_reentrancy_risk(callee.as_ref())
@@ -131,6 +126,9 @@ fn expr_contains_reentrancy_risk(expr: &Expression) -> Option<String> {
     }
 }
 
+/*  Helper functions for pattern detection */
+
+// Checks for call.value(...)
 fn is_old_call_value(expr: &Expression) -> bool {
     if let Expression::FunctionCall(_, outer_callee, _) = expr {
         // Outer '()' call
@@ -148,6 +146,7 @@ fn is_old_call_value(expr: &Expression) -> bool {
     false
 }
 
+// Checks for call{value...}
 fn is_new_call_value(expr: &Expression) -> bool {
     if let Expression::FunctionCall(_, callee, args) = expr {
         if let Expression::MemberAccess(_, _, member) = callee.as_ref() {
@@ -157,6 +156,7 @@ fn is_new_call_value(expr: &Expression) -> bool {
     false
 }
 
+// Checks for send() or transfer() functions
 fn is_send_or_transfer(expr: &Expression) -> bool {
     if let Expression::FunctionCall(_, callee, _) = expr {
         if let Expression::MemberAccess(_, _, member) = callee.as_ref() {
@@ -166,6 +166,7 @@ fn is_send_or_transfer(expr: &Expression) -> bool {
     false
 }
 
+// Checks for delegatecall or callcode functions
 fn is_delegatecall_or_callcode(expr: &Expression) -> bool {
     if let Expression::FunctionCall(_, callee, _) = expr {
         if let Expression::MemberAccess(_, _, member) = callee.as_ref() {
