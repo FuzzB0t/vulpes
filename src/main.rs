@@ -155,16 +155,16 @@ fn print_help_screen() {
     println!("      - Reentrancy in modifiers (e.g. via msg.sender)");
     println!("  • Parses entire directories of Solidity files");
     println!("  • Outputs structured JSON report at output/report.json");
-    println!("  • Beautiful CLI summaries & vulnerability breakdowns");
+    println!("  • summary & vulnerability breakdowns");
     println!();
     println!("{}OUTPUT{}:", bold, reset);
     println!("    → Human-readable CLI summary");
     println!("    → Machine-readable: output/report.json");
     println!();
     println!("{}ABOUT{}:", bold, reset);
-    println!("    Author   : YOU");
+    println!("    Author   : fuzzb0t");
     println!("    Version  : 1.0.0");
-    println!("    Repo     : https://github.com/yourname/vulpes");
+    println!("    Repo     : https://github.com/fuzzb0t/vulpes");
     println!();
     println!("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
 }
