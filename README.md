@@ -3,6 +3,13 @@
 `vulpes` is a fast, static analysis CLI tool written in Rust that detects **reentrancy vulnerabilities** in Solidity smart contracts. It parses the AST using [`solang_parser`](https://crates.io/crates/solang-parser) and identifies reentrancy patterns.
 
 ---
+## Features
+
+- Detects multiple types of reentrancy vulnerabilities.
+- Supports scanning single Solidity files or entire directories.
+- Outputs detailed JSON reports and human-readable summaries.
+- Uses the [solang_parser](https://github.com/hyperledger-labs/solang) Rust crate for Solidity parsing.
+
 
 ## 🚨 What It Detects
 
@@ -16,9 +23,15 @@ Vulpes currently detects the following reentrancy patterns:
 
 ---
 
-## 📦 Installation
+## Installation
+
+Compile the project with Rust and Cargo:
 
 ```bash
-git clone https://github.com/yourname/vulpes.git
+git clone https://github.com/yourusername/vulpes.git
 cd vulpes
-cargo build
+cargo build --release
+
+Note: The compiled executable will be located in target/release/vulpes. Move or copy that to your /usr/bin/ to execute vulpes from the command-line.
+
+
