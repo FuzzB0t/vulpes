@@ -152,7 +152,6 @@ fn print_help_screen() {
     println!("      - call.value().()");
     println!("      - call{{value:...}}()");
     println!("      - send(), transfer(), delegatecall(), callcode()");
-    println!("      - Reentrancy in modifiers (e.g. via msg.sender)");
     println!("  • Parses entire directories of Solidity files");
     println!("  • Outputs structured JSON report at output/report.json");
     println!("  • summary & vulnerability breakdowns");
