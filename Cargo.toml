@@ -3,6 +3,11 @@ name = "vulpes"
 version = "0.1.0"
 edition = "2024"
 
+[[bin]]
+edition = "2024"
+name = "vulpes"
+path = "src/main.rs"
+
 [dependencies]
 solang-parser = "0.3"
 anyhow = "1.0"
