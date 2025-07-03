@@ -95,11 +95,11 @@ fn main() -> Result<()> {
             );
             for finding in &report.findings {
                 println!(
-                    "   → \u{001b}[1m{:<20}\u{001b}[0m | fn: {:<20} | line: {:<4} | reason: {}",
+                    "   → \u{001b}[1m{:<20}\u{001b}[0m | fn: {:<20} | line: {:<4} | pattern: {}",
                     finding.contract,
                     finding.function,
                     finding.line,
-                    finding.reason
+                    finding.pattern
                 );
             }
             total_findings += report.findings.len();
