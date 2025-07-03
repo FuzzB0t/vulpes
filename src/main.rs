@@ -13,6 +13,7 @@ struct Report {
     findings: Vec<Finding>,
 }
 
+// Iterate over solidity files inside a directory
 fn collect_solidity_files(path: &str) -> Result<Vec<String>> {
     let mut files = Vec::new();
     let path = Path::new(path);
@@ -73,7 +74,7 @@ fn main() -> Result<()> {
     let json = serde_json::to_string_pretty(&reports)?;
     std::fs::write("output/report.json", &json)?;
 
-    // 📋 Pretty-print report
+    // Start report
     println!("\n\u{001b}[1;34m───── Analysis Report ─────\u{001b}[0m");
 
     let mut total_findings = 0;
@@ -105,7 +106,7 @@ fn main() -> Result<()> {
         }
     }
 
-    // 📊 Summary
+    // Summary
     let total_files = reports.len();
     let files_with_issues = reports.iter().filter(|r| !r.findings.is_empty()).count();
     let coverage = if total_files > 0 {

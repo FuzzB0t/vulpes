@@ -10,7 +10,7 @@ pub struct Finding {
     pub line: usize,
 }
 
-// Walks through AST tree and finds matching vulnerability patterns
+// Walks through AST and finds matching vulnerability patterns
 pub fn analyze_ast(ast: &SourceUnit, source: &str) -> Vec<Finding> {
     let mut findings = Vec::new();
 
@@ -43,7 +43,7 @@ pub fn analyze_ast(ast: &SourceUnit, source: &str) -> Vec<Finding> {
     findings
 }
 
-/// Recursively visit statements and record reentrancy findings with their specific reasons
+/// Recursively walk through statements and record reentrancy findings with their specific reasons
 fn visit_stmt(
     stmt: &Statement,
     contract: &str,
